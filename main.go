@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"syscall/js"
 )
 
@@ -51,6 +52,12 @@ func main() {
 		}
 	}
 
+	shuffleLi := func() {
+		for k := range li {
+			shuffle(li[k])
+		}
+	}
+
 	getShortestChain := func(start int) []int {
 		if _, ok := noMap[start]; !ok {
 			return nil
@@ -58,6 +65,7 @@ func main() {
 		if noMap[start].IsLast {
 			return []int{start}
 		}
+		shuffleLi()
 		visited := map[int]bool{}
 		queue := [][]int{{start}}
 		for len(queue) > 0 {
@@ -91,4 +99,11 @@ func main() {
 
 	fmt.Println("Wasm Go Initialized")
 	<-c
+}
+
+func shuffle[T any](arr []T) {
+	for i := range arr {
+		j := rand.Intn(i + 1)
+		arr[i], arr[j] = arr[j], arr[i]
+	}
 }
