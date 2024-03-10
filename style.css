@@ -150,3 +150,11 @@ button {
   font-family: "ヒラギノ丸ゴ Pro";
   padding: 10px;
 }
+
+footer {
+  text-align: center;
+  font-family: "ヒラギノ丸ゴ Pro";
+  font-size: 20px;
+  color: #333;
+  background-color: #f5f5f5;
+}
