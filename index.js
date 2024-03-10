@@ -40,8 +40,8 @@ const createResultItem = (name, no, imgSrc) => {
     const v = Number(e.target.value);
     if (v < 1) {
       e.target.value = 1;
-    } else if (v > 1024) {
-      e.target.value = 1024;
+    } else if (v > 1025) {
+      e.target.value = 1025;
     }
     $select.value = e.target.value;
   });
