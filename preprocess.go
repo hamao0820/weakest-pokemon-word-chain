@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"regexp"
 	"slices"
 )
 
@@ -20,6 +21,7 @@ type Data struct {
 
 type Word struct {
 	Pokemon
+	Ruby   string   `json:"reading"`
 	Start  string   `json:"start"`
 	End    []string `json:"end"`
 	IsLast bool     `json:"is_last"`
@@ -97,6 +99,8 @@ const (
 	VoicedSoundZe VoicedSoundKana = "ゼ"
 	VoicedSoundZo VoicedSoundKana = "ゾ"
 	VoicedSoundDa VoicedSoundKana = "ダ"
+	VoicedSoundDi VoicedSoundKana = "ヂ"
+	VoicedSoundDu VoicedSoundKana = "ヅ"
 	VoicedSoundDe VoicedSoundKana = "デ"
 	VoicedSoundDo VoicedSoundKana = "ド"
 	VoicedSoundBa VoicedSoundKana = "バ"
@@ -109,6 +113,7 @@ const (
 	VoicedSoundPu VoicedSoundKana = "プ"
 	VoicedSoundPe VoicedSoundKana = "ペ"
 	VoicedSoundPo VoicedSoundKana = "ポ"
+	VoicedSoundVu VoicedSoundKana = "ヴ"
 )
 
 var voicedSoundMap = map[VoicedSoundKana]string{}
@@ -125,6 +130,8 @@ func init() {
 	voicedSoundMap[VoicedSoundZe] = "セ"
 	voicedSoundMap[VoicedSoundZo] = "ソ"
 	voicedSoundMap[VoicedSoundDa] = "タ"
+	voicedSoundMap[VoicedSoundDi] = "チ"
+	voicedSoundMap[VoicedSoundDu] = "ツ"
 	voicedSoundMap[VoicedSoundDe] = "テ"
 	voicedSoundMap[VoicedSoundDo] = "ト"
 	voicedSoundMap[VoicedSoundBa] = "ハ"
@@ -137,8 +144,10 @@ func init() {
 	voicedSoundMap[VoicedSoundPu] = "フ"
 	voicedSoundMap[VoicedSoundPe] = "ヘ"
 	voicedSoundMap[VoicedSoundPo] = "ホ"
+	voicedSoundMap[VoicedSoundVu] = "ウ"
 }
 
+// TODO: ニドランの♂と♀を処理する
 func main() {
 	f, err := os.Open("data/zukan.json")
 	if err != nil {
@@ -153,10 +162,32 @@ func main() {
 	for _, p := range data.Data {
 		var w Word
 		w.Pokemon = p
-		r := []rune(p.Name)
+
+		var ruby string
+		switch p.Name {
+		case "ニドラン♂":
+			ruby = "ニドラオス"
+		case "ニドラン♀":
+			ruby = "ニドランメス"
+		case "ポリゴン2":
+			ruby = "ポリゴンツー"
+		case "ポリゴンZ":
+			ruby = "ポリゴンゼット"
+		default:
+			ruby = p.Name
+		}
+		w.Ruby = ruby
+
+		r := []rune(w.Ruby)
 		w.Start = string(r[:1])
 		endIndex := len(r) - 1
 		end := r[endIndex : endIndex+1]
+
+		pattern := `[アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンヴガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ]`
+		re, err := regexp.Compile(pattern)
+		if err != nil {
+			panic(err)
+		}
 
 		// ルールはhttps://w.atwiki.jp/ultimate/pages/16.htmlに準拠
 		// 伸ばし棒･小文字･濁音･半濁音を再帰的に処理していく
@@ -201,6 +232,10 @@ func main() {
 			if e == "ン" {
 				w.IsLast = true
 				break
+			}
+
+			if re.FindString(e) == "" {
+				panic(fmt.Errorf("illegal char is contained in End words: %s", e))
 			}
 		}
 
