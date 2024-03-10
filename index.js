@@ -13,7 +13,8 @@ const createResultItem = (name, imgSrc) => {
 (async () => {
   const res = await fetch("data/zukan.json");
   const data = await res.json();
-  const $select = document.querySelector("#select");
+  const $select = document.querySelector("#name-select");
+  const $input = document.querySelector("#no-input");
   const noDist = {};
   data.data.forEach((p) => {
     const $option = document.createElement("option");
@@ -22,6 +23,29 @@ const createResultItem = (name, imgSrc) => {
     $select.appendChild($option);
     noDist[p.no] = p.name;
   });
+
+  $input.addEventListener("change", (e) => {
+    $select.value = e.target.value;
+  });
+
+  $input.addEventListener("input", (e) => {
+    $select.value = e.target.value;
+  });
+
+  $input.addEventListener("blur", (e) => {
+    const v = Number(e.target.value);
+    if (v < 1) {
+      e.target.value = 1;
+    } else if (v > 1024) {
+      e.target.value = 1024;
+    }
+    $select.value = e.target.value;
+  });
+
+  $select.addEventListener("change", (e) => {
+    $input.value = e.target.value;
+  });
+
   const $button = document.querySelector("button");
   const $result = document.querySelector("#result");
   $button.addEventListener("click", async () => {

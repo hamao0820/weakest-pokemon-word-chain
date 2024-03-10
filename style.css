@@ -1,10 +1,119 @@
 body {
   margin: 0;
   padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  margin: 20px 20px;
+}
+
+.input {
+  margin: 20px 20px;
+}
+
+.message {
+  font-size: 20px;
+  font-family: "ヒラギノ丸ゴ Pro";
+  margin: 10px 0;
+}
+
+label {
+  font-size: 18px;
+  margin: 20px 0 10px 0;
+  font-family: "ヒラギノ丸ゴ Pro";
 }
 
 .container {
-  height: 100vh;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#no-input {
+  background: #cfcedb;
+  height: 40px;
+  width: 80px;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+#no-input::after {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  z-index: -1;
+}
+
+input {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+}
+
+#name-select {
+  text-align: center;
+  background: #cfcedb;
+  height: 40px;
+  width: 150px;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+#name-select::after {
+  text-align: center;
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  z-index: -1;
+}
+
+select {
+  /* 初期化 */
+  text-align: center;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+}
+
+button {
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: "ヒラギノ丸ゴ Pro";
+  cursor: pointer;
 }
 
 #result {
