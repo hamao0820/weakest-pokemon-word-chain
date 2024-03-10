@@ -52,6 +52,9 @@ func main() {
 		if _, ok := noMap[start]; !ok {
 			return nil
 		}
+		if noMap[start].IsLast {
+			return []int{start}
+		}
 		visited := map[int]bool{}
 		queue := [][]int{{start}}
 		for len(queue) > 0 {
@@ -75,8 +78,10 @@ func main() {
 
 	for k := range noMap {
 		path := bfs(k)
+		fmt.Printf("%s: ", noMap[k].Name)
 		for _, p := range path {
 			fmt.Printf("%s ", noMap[p].Name)
 		}
+		fmt.Println()
 	}
 }
