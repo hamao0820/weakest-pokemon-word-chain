@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./wasm_exec.js"></script>
+    <script>
+      const go = new Go();
+      WebAssembly.instantiateStreaming(
+        fetch("main.wasm"),
+        go.importObject
+      ).then((result) => {
+        go.run(result.instance);
+      });
+    </script>
+    <title>Weakest Pokemon Words Chain</title>
+  </head>
+  <body>
+    <input type="number" />
+    <button>Start</button>
+    <script>
+      const input = document.querySelector("input");
+      const button = document.querySelector("button");
+      button.addEventListener("click", () => {
+        const path = goGetShortestChain(Number(input.value));
+        console.log(path);
+      });
+    </script>
+  </body>
+</html>

@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"syscall/js"
 )
 
 //go:embed data/words.json
@@ -38,6 +39,8 @@ func init() {
 }
 
 func main() {
+	c := make(chan struct{}, 0)
+
 	li := map[int][]Word{} // 隣接リスト
 	for i := 0; i < len(words); i++ {
 		w := words[i]
@@ -48,7 +51,7 @@ func main() {
 		}
 	}
 
-	bfs := func(start int) []int {
+	getShortestChain := func(start int) []int {
 		if _, ok := noMap[start]; !ok {
 			return nil
 		}
@@ -76,12 +79,16 @@ func main() {
 		return nil
 	}
 
-	for k := range noMap {
-		path := bfs(k)
-		fmt.Printf("%s: ", noMap[k].Name)
-		for _, p := range path {
-			fmt.Printf("%s ", noMap[p].Name)
+	js.Global().Set("goGetShortestChain", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		start := args[0].Int()
+		p := getShortestChain(start)
+		arr := js.Global().Get("Array").New(len(p))
+		for i, v := range p {
+			arr.SetIndex(i, js.ValueOf(v))
 		}
-		fmt.Println()
-	}
+		return arr
+	}))
+
+	fmt.Println("Wasm Go Initialized")
+	<-c
 }
