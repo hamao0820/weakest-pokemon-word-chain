@@ -1,3 +1,15 @@
+const createResultItem = (name, imgSrc) => {
+  const $div = document.createElement("div");
+  $div.classList.add("result-item");
+  const $img = document.createElement("img");
+  $img.src = imgSrc;
+  const $span = document.createElement("span");
+  $span.textContent = name;
+  $div.appendChild($img);
+  $div.appendChild($span);
+  return $div;
+};
+
 (async () => {
   const res = await fetch("data/zukan.json");
   const data = await res.json();
@@ -27,17 +39,13 @@
       })
     );
 
-    const images = data.map((d) => {
-      const $img = document.createElement("img");
-      $img.src = d.sprites.front_default;
-      return $img;
+    const sources = data.map((d) => {
+      return d.sprites.front_default;
     });
 
-    images.forEach(($img) => {
-      document.body.appendChild($img);
-    });
-
-    const result = path.map((no) => noDist[no]).join(" -> ");
-    $result.textContent = result;
+    $result.innerHTML = "";
+    for (let i = 0; i < path.length; i++) {
+      $result.appendChild(createResultItem(noDist[path[i]], sources[i]));
+    }
   });
 })();
