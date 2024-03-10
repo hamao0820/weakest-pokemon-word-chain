@@ -1,12 +1,16 @@
-const createResultItem = (name, imgSrc) => {
+const createResultItem = (name, no, imgSrc) => {
   const $div = document.createElement("div");
   $div.classList.add("result-item");
+  const $a = document.createElement("a");
+  $a.href = "https://zukan.pokemon.co.jp/detail/" + no;
+  $a.target = "_blank";
   const $img = document.createElement("img");
   $img.src = imgSrc;
   const $span = document.createElement("span");
   $span.textContent = name;
-  $div.appendChild($img);
-  $div.appendChild($span);
+  $a.appendChild($img);
+  $a.appendChild($span);
+  $div.appendChild($a);
   return $div;
 };
 
@@ -69,7 +73,9 @@ const createResultItem = (name, imgSrc) => {
 
     $result.innerHTML = "";
     for (let i = 0; i < path.length; i++) {
-      $result.appendChild(createResultItem(noDist[path[i]], sources[i]));
+      $result.appendChild(
+        createResultItem(noDist[path[i]], path[i], sources[i])
+      );
     }
   });
 })();
