@@ -1,10 +1,13 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"fmt"
-	"os"
 )
+
+//go:embed data/words.json
+var wordsJSON []byte
 
 type Pokemon struct {
 	No   int    `json:"no"`
@@ -24,16 +27,7 @@ var noMap map[int]*Word
 var startMap map[string][]*Word
 
 func init() {
-	f, err := os.Open("data/words.json")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	jsonParser := json.NewDecoder(f)
-	if err := jsonParser.Decode(&words); err != nil {
-		panic(err)
-	}
+	json.Unmarshal(wordsJSON, &words)
 
 	noMap = make(map[int]*Word)
 	startMap = make(map[string][]*Word)
