@@ -16,15 +16,10 @@
     <title>Weakest Pokemon Words Chain</title>
   </head>
   <body>
-    <input type="number" />
+    <label for="select">最初のポケモンを選択してね</label>
+    <select id="select"></select>
     <button>Start</button>
-    <script>
-      const input = document.querySelector("input");
-      const button = document.querySelector("button");
-      button.addEventListener("click", () => {
-        const path = goGetShortestChain(Number(input.value));
-        console.log(path);
-      });
-    </script>
+    <div id="result"></div>
+    <script src="index.js"></script>
   </body>
 </html>
