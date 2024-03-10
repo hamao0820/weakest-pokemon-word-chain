@@ -145,7 +145,6 @@ func init() {
 	voicedSoundMap[VoicedSoundVu] = "ウ"
 }
 
-// TODO: ニドランの♂と♀を処理する
 func main() {
 	f, err := os.Open("data/zukan.json")
 	if err != nil {
@@ -187,7 +186,7 @@ func main() {
 			panic(err)
 		}
 
-		// ルールはhttps://w.atwiki.jp/ultimate/pages/16.htmlに準拠
+		// ルールは(https://w.atwiki.jp/ultimate/pages/16.html)に準拠
 		// 伸ばし棒･小文字･濁音･半濁音を再帰的に処理していく
 		for i := endIndex; i > 0; i-- {
 			back := false
