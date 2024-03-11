@@ -12,6 +12,8 @@ h1 {
 
 .input {
   margin: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .message {
@@ -27,7 +29,6 @@ label {
 }
 
 .container {
-  height: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -119,12 +120,14 @@ button {
 #result {
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
 }
 
 .result-item {
   transition: 0.5s;
+  margin: 10px 0;
 }
 
 .result-item:hover {
