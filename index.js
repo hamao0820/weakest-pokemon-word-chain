@@ -59,22 +59,15 @@ const createResultItem = (name, no, imgSrc) => {
         "このポケモンから始めると、しりとりは終了しません。";
       return;
     }
-    const data = await Promise.all(
-      path.map(async (no) => {
-        const url = "https://pokeapi.co/api/v2/pokemon/" + no;
-        const res = await fetch(url);
-        return res.json();
-      })
-    );
-
-    const sources = data.map((d) => {
-      return d.sprites.front_default;
-    });
 
     $result.innerHTML = "";
     for (let i = 0; i < path.length; i++) {
       $result.appendChild(
-        createResultItem(noDist[path[i]], path[i], sources[i])
+        createResultItem(
+          noDist[path[i]],
+          path[i],
+          `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${path[i]}.png`
+        )
       );
     }
   });
